@@ -339,8 +339,11 @@
                                     if (e.originalEvent) {
                                         e = e.originalEvent;
                                     }
-                                    $scrollParent[0].scrollLeft += (e.deltaX || -e.wheelDeltaX);
-                                    $scrollParent[0].scrollTop += (e.deltaY || -e.wheelDeltaY);
+                                    var deltaX = (e.deltaX || -e.wheelDeltaX),
+                                        deltaY = (e.deltaY || -e.wheelDeltaY);
+
+                                    if (Math.abs(deltaX) > 0) $scrollParent[0].scrollLeft += deltaX;
+                                    if (Math.abs(deltaY) > 0) $scrollParent[0].scrollTop += deltaY;
                                 }).on('mousemove', function(e) {
                                     if (_prevMouse.x !== e.clientX || _prevMouse.y !== e.clientY) {
                                         angular.element(this).css('display', 'none');
