@@ -239,12 +239,18 @@
                                     var s = $scope.$new(false);
                                     var counter = originalCollection.length;
                                     $scope.sizes = originalCollection.map(function(item) {
-                                        angular.extend(s, item);
-                                        s[lhs] = item;
-                                        var size = ($attrs.vsSize || $attrs.vsSizeProperty) ?
-                                                        s.$eval($attrs.vsSize || $attrs.vsSizeProperty) :
-                                                        $scope.elementSize;
-                                        for(var p in item) {
+                                        if($attrs.vsSizeProperty && item[$attrs.vsSizeProperty] && !(item[$attrs.vsSizeProperty].constructor && item[$attrs.vsSizeProperty].call && item[$attrs.vsSizeProperty].apply))
+                                        {
+                                            size = item[$attrs.vsSizeProperty];
+                                        } else
+                                        {  
+                                            var s = $scope.$new(false);
+                                            angular.extend(s, item);
+                                            s[lhs] = item;
+                                            var size = ($attrs.vsSize || $attrs.vsSizeProperty) ?
+                                                            s.$eval($attrs.vsSize || $attrs.vsSizeProperty) :
+                                                            $scope.elementSize;
+                                            for(var p in item) {
                                             if(p && s[p]) delete s[p];
                                         }
                                         if(--counter === 0)
